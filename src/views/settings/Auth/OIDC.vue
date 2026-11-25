@@ -129,7 +129,11 @@ export default {
             component: JsonEditor,
             rules: [JsonRequired]
           },
-          OPENID_ORG_IDS: getOrgSelect2Meta()
+          OPENID_ORG_IDS: {
+            ...getOrgSelect2Meta(),
+            // Community edition: org mapping is available without a license.
+            hidden: () => false
+          }
         },
         submitMethod: () => 'patch',
         afterGetFormValue(obj) {

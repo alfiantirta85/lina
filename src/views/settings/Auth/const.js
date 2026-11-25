@@ -26,6 +26,10 @@ export function getOrgSelect2Meta() {
   }
 }
 
+// Community edition: auth providers that exist in Core but are hidden by the
+// license gate above. Only these are surfaced when no valid license is present.
+const COMMUNITY_ENABLED_BACKENDS = ['OIDC']
+
 export function getAuthItems() {
   const xpackBackends = [
     {
@@ -148,6 +152,10 @@ export function getAuthItems() {
   if (store.getters.hasValidLicense) {
     // 把 AUTH_LDAP_HA 加到 authItems 中的 AUTH_LDAP 后面
     authItems.push(...xpackBackends)
+  } else {
+    authItems.push(
+      ...xpackBackends.filter((item) => COMMUNITY_ENABLED_BACKENDS.includes(item.name))
+    )
   }
   return authItems
 }
